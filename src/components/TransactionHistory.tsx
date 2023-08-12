@@ -1,9 +1,20 @@
-import { Button, Table, Title } from "@mantine/core";
+import { Button, Table, ThemeIcon, Title } from "@mantine/core";
 import { type Month, Transaction } from "@prisma/client";
 import { type FC, useState, type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
+import { AiFillDelete } from "react-icons/ai";
+import { notifications } from "@mantine/notifications";
 
 const Transaction: FC<{ transaction: Transaction }> = ({ transaction }) => {
+  const deleteTransactionMutation = api.transactions.delete.useMutation({
+    onSuccess: () => {
+      notifications.show({
+        message: "Succesfully deleted the transaction",
+        color: "green",
+      });
+    },
+  });
+
   return (
     <tr className="rounded-sm p-4 shadow-sm" key={transaction.id}>
       <td>{transaction.date}</td>
@@ -18,6 +29,16 @@ const Transaction: FC<{ transaction: Transaction }> = ({ transaction }) => {
         {transaction.category}
       </td>
       <td>{transaction.amount}</td>
+      <td>
+        <ThemeIcon
+          className="cursor-pointer"
+          onClick={() => {
+            deleteTransactionMutation.mutate({ transactionId: transaction.id });
+          }}
+        >
+          <AiFillDelete />
+        </ThemeIcon>
+      </td>
     </tr>
   );
 };
@@ -78,6 +99,7 @@ const TransactionHistory: FC<{ month: Month }> = ({ month }) => {
             <th>Title</th>
             <th>Category</th>
             <th>Amount</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>

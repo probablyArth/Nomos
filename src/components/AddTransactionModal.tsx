@@ -70,7 +70,9 @@ const AddTransactionModal: FC<{ monthId: string; closeModal: () => void }> = ({
           {...form.getInputProps("amount")}
           min={1}
         />
-        <Button type="submit">Add</Button>
+        <Button type="submit" disabled={addTransactionMutation.isLoading}>
+          Add
+        </Button>
       </form>
     </div>
   );

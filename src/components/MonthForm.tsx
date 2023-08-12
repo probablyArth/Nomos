@@ -62,7 +62,9 @@ const MonthForm = () => {
             {...form.getInputProps("budget")}
             min={100}
           />
-          <Button type="submit">nice</Button>
+          <Button type="submit" disabled={setMonthMutation.isLoading}>
+            nice
+          </Button>
         </form>
       </div>
     </Modal>
