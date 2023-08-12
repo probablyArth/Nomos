@@ -1,10 +1,21 @@
 import { Button, Modal, Skeleton } from "@mantine/core";
 import { signIn, useSession } from "next-auth/react";
 import React from "react";
+import { api } from "~/utils/api";
+import MonthForm from "~/components/monthForm";
 
 const Dashboard = () => {
   const { status } = useSession();
-  if (status == "loading")
+  const { data, isLoading } = api.month.getMonthData.useQuery(
+    {
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+    },
+    { enabled: status === "authenticated" }
+  );
+  console.log({ data, isLoading, status });
+
+  if (status == "loading" || isLoading)
     return (
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-8 p-4">
         <Skeleton height={35} radius="sm" />
@@ -29,7 +40,7 @@ const Dashboard = () => {
       </Modal>
     );
   }
-  return <div>Dashboard</div>;
+  if (data?.month === null) return <MonthForm />;
 };
 
 export default Dashboard;
