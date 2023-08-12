@@ -1,7 +1,27 @@
-import { Button, Modal, TextInput, Title } from "@mantine/core";
+import { Button, Modal, NumberInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { api } from "~/utils/api";
+import { notifications } from "@mantine/notifications";
+import { useRouter } from "next/router";
 
 const MonthForm = () => {
+  const router = useRouter();
+  const setMonthMutation = api.month.setMonthData.useMutation({
+    onSuccess: () => {
+      notifications.show({
+        message: "Success",
+        color: "green",
+      });
+      router.reload();
+    },
+    onError: () => {
+      notifications.show({
+        message: "An error occurred.",
+        color: "red",
+      });
+    },
+  });
+
   const form = useForm({
     initialValues: {
       budget: 0.0,
@@ -13,6 +33,7 @@ const MonthForm = () => {
           : null,
     },
   });
+
   return (
     <Modal
       opened
@@ -25,16 +46,21 @@ const MonthForm = () => {
           {"Let's"} start with setting goals for this month
         </Title>
         <form
-          onSubmit={form.onSubmit((values) => {
-            console.log(values);
+          onSubmit={form.onSubmit(({ budget }) => {
+            setMonthMutation.mutate({
+              budget: budget,
+              year: new Date().getFullYear(),
+              month: new Date().getMonth(),
+            });
           })}
           className="flex flex-col gap-8"
         >
-          <TextInput
+          <NumberInput
             label="Budget"
             placeholder="100.0"
             required
             {...form.getInputProps("budget")}
+            min={100}
           />
           <Button type="submit">nice</Button>
         </form>

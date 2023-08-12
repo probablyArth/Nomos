@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -43,5 +44,31 @@ export const monthRouter = createTRPCRouter({
         },
       });
       return { message: "Succesfully created budget for the month" };
+    }),
+  getCummulativeTransactions: protectedProcedure
+    .input(z.object({ monthId: z.string() }))
+    .query(async ({ ctx, input: { monthId } }) => {
+      const data = await ctx.prisma.month.findFirst({
+        where: {
+          id: monthId,
+        },
+        select: {
+          transactions: true,
+        },
+      });
+      data?.transactions.sort((a, b) => {
+        return a.date - b.date;
+      });
+      const cummObj = new Map<number, number>();
+      let amount = 0;
+      data?.transactions.forEach((transaction) => {
+        amount += transaction.amount;
+        if (cummObj.has(transaction.date)) {
+          cummObj.set(transaction.date, amount);
+        } else {
+          cummObj.set(transaction.date, amount);
+        }
+      });
+      return { cummObj };
     }),
 });

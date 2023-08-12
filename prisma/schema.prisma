@@ -72,10 +72,10 @@ model Transaction {
     title String
     category TransactionCategory
     amount Float
-    date DateTime
-    user User @relation(fields: [userId], references: [id])
+    date Int
+    user User @relation(fields: [userId], references: [id],  onDelete: Cascade)
     userId String
-    month Month @relation(fields: [monthId], references: [id])
+    month Month @relation(fields: [monthId], references: [id],  onDelete: Cascade)
     monthId String
 }
 
@@ -85,6 +85,6 @@ model Month {
     month Int
     transactions Transaction[]
     budget Float
-    user User @relation(fields: [userId], references: [id])
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade) 
     userId String
 }
