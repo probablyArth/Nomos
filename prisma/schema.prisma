@@ -50,6 +50,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     transactions Transaction[]
+    months Month[]
 }
 
 model VerificationToken {
@@ -84,4 +85,6 @@ model Month {
     month Int
     transactions Transaction[]
     budget Float
+    user User @relation(fields: [userId], references: [id])
+    userId String
 }
