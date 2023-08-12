@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -16,6 +17,7 @@ export const monthRouter = createTRPCRouter({
         where: {
           year: input.year,
           month: input.month,
+          userId: ctx.session.user.id,
         },
       });
       return { month };
@@ -27,6 +29,7 @@ export const monthRouter = createTRPCRouter({
         where: {
           year,
           month,
+          userId: ctx.session.user.id,
         },
       });
       if (foundMonth !== null) {
@@ -51,6 +54,7 @@ export const monthRouter = createTRPCRouter({
       const data = await ctx.prisma.month.findFirst({
         where: {
           id: monthId,
+          userId: ctx.session.user.id,
         },
         select: {
           transactions: true,

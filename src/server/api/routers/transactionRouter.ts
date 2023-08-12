@@ -43,7 +43,7 @@ export const transactionRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const transactions = await ctx.prisma.transaction.findMany({
-        where: { monthId: input.monthId },
+        where: { monthId: input.monthId, userId: ctx.session.user.id },
         orderBy: {
           date: "asc",
         },

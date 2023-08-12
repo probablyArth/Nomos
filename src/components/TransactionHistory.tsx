@@ -1,6 +1,6 @@
 import { Button, Table, Title } from "@mantine/core";
 import { type Month, Transaction } from "@prisma/client";
-import { type FC, useState, Dispatch, SetStateAction } from "react";
+import { type FC, useState, type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
 
 const Transaction: FC<{ transaction: Transaction }> = ({ transaction }) => {
