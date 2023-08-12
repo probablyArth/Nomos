@@ -22,17 +22,7 @@ const Dashboard = () => {
     },
     { enabled: status === "authenticated" }
   );
-
-  if (status == "loading" || isLoading)
-    return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center gap-8 p-4">
-        <Skeleton height={35} radius="sm" />
-        <Skeleton height={35} radius="sm" />
-        <Skeleton height={35} radius="sm" />
-        <Skeleton height={35} radius="sm" />
-        <Skeleton height={35} radius="sm" />
-      </div>
-    );
+  console.log({ status });
   if (status == "unauthenticated") {
     return (
       <Modal
@@ -48,6 +38,16 @@ const Dashboard = () => {
       </Modal>
     );
   }
+  if (status == "loading" || isLoading)
+    return (
+      <div className="flex h-screen w-screen flex-col items-center justify-center gap-8 p-4">
+        <Skeleton height={35} radius="sm" />
+        <Skeleton height={35} radius="sm" />
+        <Skeleton height={35} radius="sm" />
+        <Skeleton height={35} radius="sm" />
+        <Skeleton height={35} radius="sm" />
+      </div>
+    );
   if (data?.month === null) return <MonthForm />;
   const currComp = [
     <MonthStats month={data?.month as Month} key={0} />,

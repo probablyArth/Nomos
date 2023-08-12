@@ -1,9 +1,10 @@
-import { ActionIcon, Button, Drawer } from "@mantine/core";
+import { ActionIcon, Button, Drawer, Title } from "@mantine/core";
 import { type Dispatch, type FC, type SetStateAction } from "react";
 import { createMedia } from "@artsy/fresnel";
 import { useDisclosure } from "@mantine/hooks";
 import { ImCross } from "react-icons/im";
 import { type menu } from "~/pages/dashboard";
+import { signOut } from "next-auth/react";
 
 const Sidebar: FC<{
   currMenu: menu;
@@ -26,6 +27,7 @@ const Sidebar: FC<{
   const SideBarMenu = () => {
     return (
       <>
+        <Title>Nomos</Title>
         <Button
           onClick={openModal}
           size="xl"
@@ -55,6 +57,16 @@ const Sidebar: FC<{
           className="w-[200px]"
         >
           transactions
+        </Button>
+        <Button
+          onClick={() => {
+            void signOut();
+          }}
+          size="xl"
+          color="red"
+          className="w-[200px]"
+        >
+          logout
         </Button>
       </>
     );
