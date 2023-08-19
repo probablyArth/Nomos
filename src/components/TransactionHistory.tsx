@@ -66,10 +66,12 @@ type filters = "food" | "commute" | "school";
 const FilterButton: FC<{
   setFilter: Dispatch<SetStateAction<filters | undefined>>;
   category: filters;
-}> = ({ setFilter, category }) => {
+  isSelected: boolean;
+}> = ({ setFilter, category, isSelected }) => {
   return (
     <Button
       color={filterToColor[category]}
+      variant={isSelected ? "outline" : "filled"}
       onClick={() => {
         setFilter(category);
       }}
@@ -90,9 +92,21 @@ const TransactionHistory: FC<{ month: Month }> = ({ month }) => {
     <div className="flex h-screen w-full flex-col items-center gap-5">
       <Title>Transaction History</Title>
       <div className="flex gap-4">
-        <FilterButton category="food" setFilter={setFilter} />
-        <FilterButton category="commute" setFilter={setFilter} />
-        <FilterButton category="school" setFilter={setFilter} />
+        <FilterButton
+          category="food"
+          setFilter={setFilter}
+          isSelected={filter === "food"}
+        />
+        <FilterButton
+          category="commute"
+          setFilter={setFilter}
+          isSelected={filter === "commute"}
+        />
+        <FilterButton
+          category="school"
+          setFilter={setFilter}
+          isSelected={filter === "school"}
+        />
         <Button
           variant="outline"
           onClick={() => {
