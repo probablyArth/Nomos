@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 import { type Month } from "@prisma/client";
 import { useState, type FC, useEffect } from "react";
@@ -18,16 +19,13 @@ const MonthStats: FC<{ month: Month }> = ({ month }) => {
   const cummQuery = api.month.getCummulativeTransactions.useQuery({
     monthId: month.id,
   });
-  console.log({ data });
   useEffect(() => {
     if (!cummQuery.isLoading && cummQuery.data) {
-      console.log(cummQuery.data.cummObj);
       const arr: { name: string; amount: number }[] = [];
       cummQuery.data.cummObj.forEach((v, k) => {
         arr.push({ name: String(k), amount: v });
       });
       setData(arr);
-
       if ((arr[arr.length - 1]?.amount as number) >= month.budget) {
         setStrokeColor("red");
       }
@@ -37,13 +35,17 @@ const MonthStats: FC<{ month: Month }> = ({ month }) => {
     <div className="flex h-screen w-full flex-col items-center gap-8">
       <Title>Month History</Title>
       {month.month}/{month.year}
-      <LineChart width={700} height={500} data={data}>
-        <Line type={"monotone"} dataKey={"amount"} stroke={strokeColor} />
-        <CartesianGrid stroke={strokeColor} />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-      </LineChart>
+      {cummQuery.isLoading && !cummQuery.data ? (
+        <h1>Loading..</h1>
+      ) : (
+        <LineChart width={700} height={500} data={data}>
+          <Line type={"monotone"} dataKey={"amount"} stroke={strokeColor} />
+          <CartesianGrid stroke={strokeColor} />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+        </LineChart>
+      )}
     </div>
   );
 };

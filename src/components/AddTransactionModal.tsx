@@ -1,7 +1,7 @@
 import { Button, NumberInput, Select, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { Transaction } from "@prisma/client";
+import { type Transaction } from "@prisma/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { type FC } from "react";
 import { api } from "~/utils/api";

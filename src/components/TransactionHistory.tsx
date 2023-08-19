@@ -86,10 +86,6 @@ const TransactionHistory: FC<{ month: Month }> = ({ month }) => {
     monthId: month.id,
   });
 
-  if (!transactionsQuery.data) {
-    return <h1>Loading</h1>;
-  }
-
   return (
     <div className="flex h-screen w-full flex-col items-center gap-5">
       <Title>Transaction History</Title>
@@ -106,29 +102,33 @@ const TransactionHistory: FC<{ month: Month }> = ({ month }) => {
           Remove filters
         </Button>
       </div>
-      <Table>
-        <thead>
-          <tr>
-            <th>Day</th>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Amount</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {transactionsQuery.data.transactions.map((transaction, key) => {
-            if (filter) {
-              if (transaction.category === filter) {
-                return <Transaction transaction={transaction} key={key} />;
-              } else {
-                return <></>;
+      {transactionsQuery.isLoading || !transactionsQuery.data ? (
+        <h1>Loading...</h1>
+      ) : (
+        <Table>
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactionsQuery.data.transactions.map((transaction, key) => {
+              if (filter) {
+                if (transaction.category === filter) {
+                  return <Transaction transaction={transaction} key={key} />;
+                } else {
+                  return <></>;
+                }
               }
-            }
-            return <Transaction transaction={transaction} key={key} />;
-          })}
-        </tbody>
-      </Table>
+              return <Transaction transaction={transaction} key={key} />;
+            })}
+          </tbody>
+        </Table>
+      )}
     </div>
   );
 };
