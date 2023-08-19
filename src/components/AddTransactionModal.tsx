@@ -5,6 +5,7 @@ import { type Transaction } from "@prisma/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { type FC } from "react";
 import { api } from "~/utils/api";
+import { DateInput } from "@mantine/dates";
 
 const AddTransactionModal: FC<{ monthId: string; closeModal: () => void }> = ({
   monthId,
@@ -14,11 +15,13 @@ const AddTransactionModal: FC<{ monthId: string; closeModal: () => void }> = ({
     amount: number;
     category: "food" | "commute" | "school";
     title: string;
+    date: Date;
   }>({
     initialValues: {
       amount: 0,
       category: "food",
       title: "",
+      date: new Date(),
     },
   });
 
@@ -37,6 +40,7 @@ const AddTransactionModal: FC<{ monthId: string; closeModal: () => void }> = ({
         transactions: Transaction[];
       }>(queryKey);
       queryData?.transactions.push(data);
+      queryData?.transactions.sort((a, b) => a.date - b.date);
       queryClient.setQueryData(queryKey, queryData);
       closeModal();
     },
@@ -53,12 +57,12 @@ const AddTransactionModal: FC<{ monthId: string; closeModal: () => void }> = ({
       <Title order={3}>Add a transaction</Title>
       <form
         className="flex flex-col gap-3"
-        onSubmit={form.onSubmit(({ amount, category, title }) => {
+        onSubmit={form.onSubmit(({ amount, category, title, date }) => {
           addTransactionMutation.mutate({
             amount,
             category,
             title,
-            date: new Date().getDate(),
+            date: date.getDate(),
             monthId,
           });
         })}
@@ -82,6 +86,7 @@ const AddTransactionModal: FC<{ monthId: string; closeModal: () => void }> = ({
           {...form.getInputProps("amount")}
           min={1}
         />
+        <DateInput {...form.getInputProps("date")} />
         <Button type="submit" disabled={addTransactionMutation.isLoading}>
           Add
         </Button>
