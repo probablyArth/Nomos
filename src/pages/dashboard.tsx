@@ -5,9 +5,9 @@ import { useDisclosure } from "@mantine/hooks";
 import { api } from "~/utils/api";
 import MonthForm from "~/components/MonthForm";
 import AddTransactionModal from "~/components/AddTransactionModal";
-import MonthStats from "~/components/MonthStats";
+import Overview from "~/menus/Overview";
 import { type Month } from "@prisma/client";
-import TransactionHistory from "~/components/TransactionHistory";
+import TransactionHistory from "~/menus/TransactionHistory";
 import { useState, useEffect } from "react";
 import Sidebar from "~/components/SideBar";
 export type menu = 0 | 1;
@@ -57,7 +57,7 @@ const Dashboard = () => {
     );
   if (data?.month === null) return <MonthForm />;
   const currComp = [
-    <MonthStats month={data?.month as Month} key={0} />,
+    <Overview month={data?.month as Month} key={0} />,
     <TransactionHistory month={data?.month as Month} key={1} />,
   ];
   return (

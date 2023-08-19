@@ -6,7 +6,7 @@ import { api } from "~/utils/api";
 import { Tooltip, LineChart, Line, XAxis, YAxis } from "recharts";
 import { Title } from "@mantine/core";
 
-const MonthStats: FC<{ month: Month }> = ({ month }) => {
+const Overview: FC<{ month: Month }> = ({ month }) => {
   const [data, setData] = useState<{ name: string; amount: number }[]>([]);
   const [strokeColor, setStrokeColor] = useState("green");
   const cummQuery = api.month.getCummulativeTransactions.useQuery({
@@ -42,4 +42,4 @@ const MonthStats: FC<{ month: Month }> = ({ month }) => {
   );
 };
 
-export default MonthStats;
+export default Overview;
