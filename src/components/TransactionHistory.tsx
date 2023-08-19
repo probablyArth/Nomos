@@ -66,7 +66,7 @@ const FilterButton: FC<{
 };
 
 const TransactionHistory: FC<{ month: Month }> = ({ month }) => {
-  const [filter, setFilter] = useState<filters | undefined>("food");
+  const [filter, setFilter] = useState<filters | undefined>(undefined);
 
   const transactionsQuery = api.transactions.get.useQuery({
     monthId: month.id,
