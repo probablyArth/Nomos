@@ -8,11 +8,18 @@ import AddTransactionModal from "~/components/AddTransactionModal";
 import MonthStats from "~/components/MonthStats";
 import { type Month } from "@prisma/client";
 import TransactionHistory from "~/components/TransactionHistory";
-import { useState, type FC } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "~/components/SideBar";
 export type menu = 0 | 1;
 const Dashboard = () => {
-  const [currMenu, setCurrMenu] = useState<menu>(0);
+  const [currMenu, setCurrMenu] = useState<menu>(
+    typeof window !== "undefined"
+      ? (Number(localStorage.getItem("currMenu")) as menu) || 0
+      : 0
+  );
+  useEffect(() => {
+    localStorage.setItem("currMenu", currMenu.toString());
+  }, [currMenu]);
   const { status } = useSession();
   const [opened, { open, close }] = useDisclosure(false);
   const { data, isLoading } = api.month.getMonthData.useQuery(
