@@ -13,3 +13,4 @@ track your finances
 - CockroachDB
 - tRPC
 - prisma
+- react-query
