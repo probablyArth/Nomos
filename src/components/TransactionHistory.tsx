@@ -4,14 +4,28 @@ import { type FC, useState, type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
 import { AiFillDelete } from "react-icons/ai";
 import { notifications } from "@mantine/notifications";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Transaction: FC<{ transaction: Transaction }> = ({ transaction }) => {
+  const queryClient = useQueryClient();
+
   const deleteTransactionMutation = api.transactions.delete.useMutation({
     onSuccess: () => {
       notifications.show({
         message: "Succesfully deleted the transaction",
         color: "green",
       });
+      const queryKey = [
+        ["transactions", "get"],
+        { input: { monthId: transaction.monthId }, type: "query" },
+      ];
+      const data = queryClient.getQueryData<{ transactions: Transaction[] }>(
+        queryKey
+      );
+      const newData = data?.transactions.filter(
+        (arrTransaction) => arrTransaction.id !== transaction.id
+      );
+      queryClient.setQueryData(queryKey, { transactions: newData });
     },
   });
 

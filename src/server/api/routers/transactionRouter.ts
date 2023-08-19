@@ -22,7 +22,7 @@ export const transactionRouter = createTRPCRouter({
     )
     .mutation(
       async ({ ctx, input: { amount, monthId, date, category, title } }) => {
-        await ctx.prisma.transaction.create({
+        const created = await ctx.prisma.transaction.create({
           data: {
             amount,
             monthId,
@@ -32,7 +32,7 @@ export const transactionRouter = createTRPCRouter({
             title,
           },
         });
-        return { message: "success" };
+        return { data: created };
       }
     ),
   get: protectedProcedure

@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -23,6 +24,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     >
       <Notifications />
       <SessionProvider session={session}>
+        <ReactQueryDevtools />
         <Component {...pageProps} />
       </SessionProvider>
     </MantineProvider>

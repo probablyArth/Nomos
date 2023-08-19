@@ -1,6 +1,8 @@
 import { Button, NumberInput, Select, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
+import { Transaction } from "@prisma/client";
+import { useQueryClient } from "@tanstack/react-query";
 import { type FC } from "react";
 import { api } from "~/utils/api";
 
@@ -20,12 +22,22 @@ const AddTransactionModal: FC<{ monthId: string; closeModal: () => void }> = ({
     },
   });
 
+  const queryClient = useQueryClient();
   const addTransactionMutation = api.transactions.create.useMutation({
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
       notifications.show({
         message: "Succesfully added the transaction",
         color: "green",
       });
+      const queryKey = [
+        ["transactions", "get"],
+        { input: { monthId: monthId }, type: "query" },
+      ];
+      const queryData = queryClient.getQueryData<{
+        transactions: Transaction[];
+      }>(queryKey);
+      queryData?.transactions.push(data);
+      queryClient.setQueryData(queryKey, queryData);
       closeModal();
     },
     onError: () => {
