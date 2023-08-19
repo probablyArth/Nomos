@@ -3,14 +3,7 @@
 import { type Month } from "@prisma/client";
 import { useState, type FC, useEffect } from "react";
 import { api } from "~/utils/api";
-import {
-  Tooltip,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-} from "recharts";
+import { Tooltip, LineChart, Line, XAxis, YAxis } from "recharts";
 import { Title } from "@mantine/core";
 
 const MonthStats: FC<{ month: Month }> = ({ month }) => {
@@ -40,7 +33,6 @@ const MonthStats: FC<{ month: Month }> = ({ month }) => {
       ) : (
         <LineChart width={700} height={500} data={data}>
           <Line type={"monotone"} dataKey={"amount"} stroke={strokeColor} />
-          <CartesianGrid stroke={strokeColor} />
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
