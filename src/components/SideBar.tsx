@@ -59,6 +59,17 @@ const Sidebar: FC<{
           transactions
         </Button>
         <Button
+          variant={currMenu === 2 ? "outline" : "filled"}
+          onClick={() => {
+            setCurrMenu(2);
+            close();
+          }}
+          size="xl"
+          className="w-[200px]"
+        >
+          settings
+        </Button>
+        <Button
           onClick={() => {
             void signOut();
           }}

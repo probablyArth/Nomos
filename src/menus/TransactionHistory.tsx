@@ -1,6 +1,12 @@
 import { Button, Table, ThemeIcon, Title } from "@mantine/core";
 import { type Month, Transaction } from "@prisma/client";
-import { type FC, useState, type Dispatch, type SetStateAction } from "react";
+import {
+  type FC,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+} from "react";
 import { api } from "~/utils/api";
 import { AiFillDelete } from "react-icons/ai";
 import { notifications } from "@mantine/notifications";
@@ -87,6 +93,10 @@ const TransactionHistory: FC<{ month: Month }> = ({ month }) => {
   const transactionsQuery = api.transactions.get.useQuery({
     monthId: month.id,
   });
+
+  useEffect(() => {
+    console.log(transactionsQuery.data);
+  }, [transactionsQuery.isFetched]);
 
   return (
     <div className="flex h-screen w-full flex-col items-center gap-5">

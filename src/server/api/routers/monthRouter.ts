@@ -17,6 +17,19 @@ export const monthRouter = createTRPCRouter({
       });
       return { month };
     }),
+  updateMonthBudget: protectedProcedure
+    .input(z.object({ monthId: z.string(), newBudget: z.number() }))
+    .mutation(async ({ ctx, input: { monthId, newBudget } }) => {
+      await ctx.prisma.month.update({
+        where: {
+          id: monthId,
+        },
+        data: {
+          budget: newBudget,
+        },
+      });
+      return { newBudget };
+    }),
   setMonthData: protectedProcedure
     .input(monthInput.extend({ budget: z.number() }))
     .mutation(async ({ ctx, input: { budget, month, year } }) => {

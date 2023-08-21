@@ -12,6 +12,7 @@ const Overview: FC<{ month: Month }> = ({ month }) => {
   const cummQuery = api.month.getCummulativeTransactions.useQuery({
     monthId: month.id,
   });
+
   useEffect(() => {
     if (!cummQuery.isLoading && cummQuery.data) {
       const arr: { name: string; amount: number }[] = [];
@@ -24,6 +25,7 @@ const Overview: FC<{ month: Month }> = ({ month }) => {
       }
     }
   }, [cummQuery.isLoading, cummQuery.data]);
+
   return (
     <div className="flex h-screen w-full flex-col items-center gap-8">
       <Title>Month History</Title>

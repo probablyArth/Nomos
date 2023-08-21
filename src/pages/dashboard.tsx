@@ -1,16 +1,22 @@
 /* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
-import { Button, Modal, ScrollArea, Skeleton } from "@mantine/core";
-import { signIn, useSession } from "next-auth/react";
-import { useDisclosure } from "@mantine/hooks";
+import { useState, useEffect } from "react";
+// menus
+import Overview from "~/menus/Overview";
+import TransactionHistory from "~/menus/TransactionHistory";
+import Settings from "~/menus/Settings";
+
 import { api } from "~/utils/api";
+
 import MonthForm from "~/components/MonthForm";
 import AddTransactionModal from "~/components/AddTransactionModal";
-import Overview from "~/menus/Overview";
-import { type Month } from "@prisma/client";
-import TransactionHistory from "~/menus/TransactionHistory";
-import { useState, useEffect } from "react";
 import Sidebar from "~/components/SideBar";
-export type menu = 0 | 1;
+
+import { useDisclosure } from "@mantine/hooks";
+import { Button, Modal, ScrollArea, Skeleton } from "@mantine/core";
+import { signIn, useSession } from "next-auth/react";
+import { type Month } from "@prisma/client";
+
+export type menu = 0 | 1 | 2;
 const Dashboard = () => {
   const [currMenu, setCurrMenu] = useState<menu>(
     typeof window !== "undefined"
@@ -29,7 +35,9 @@ const Dashboard = () => {
     },
     { enabled: status === "authenticated" }
   );
-  console.log({ status });
+  // useEffect(() => {
+  //   console.log({ data });
+  // }, [data]);
   if (status == "unauthenticated") {
     return (
       <Modal
@@ -59,6 +67,7 @@ const Dashboard = () => {
   const currComp = [
     <Overview month={data?.month as Month} key={0} />,
     <TransactionHistory month={data?.month as Month} key={1} />,
+    <Settings month={data?.month as Month} key={2} />,
   ];
   return (
     <div className="flex h-screen w-full items-center">
