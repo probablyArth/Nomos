@@ -1,6 +1,9 @@
-# Nomos
-track your expenses
+<p align="center">
+<h1>Nomos</h1>
+<i>track your expenses</i>
+</p>
 
+![Nomos](./.github/nomos.png)
 ## Features
 - User Authentication: Securely log in and manage your expenses with NextAuth for user authentication.
 - Expense Tracking: Easily add, edit, and categorize your expenses to keep a detailed record of your spending.
