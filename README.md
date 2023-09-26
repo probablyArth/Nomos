@@ -1,5 +1,4 @@
-# nomos
-track your finances
+![Nomos](./.github/assets/github-header-image.png)
 
 ## screenshots
 <img src="./.github/assets/nomos.png"></img>
