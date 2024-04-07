@@ -27,7 +27,7 @@ Nomos is built using the following technologies:
 ## Developing Locally
 - Clone the repository:
 ```bash
-git clone https://github.com/yourusername/nomos.git
+git clone https://github.com/probablyarth/nomos.git
 ```
 - Install the dependencies:
 ```bash
